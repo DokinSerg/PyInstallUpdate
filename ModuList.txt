@@ -1,3 +1,6 @@
 mypy
 pylint
 rich
+pyMI
+pysftp
+types-paramiko
