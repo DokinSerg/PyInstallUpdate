@@ -1,15 +1,36 @@
 # pylint: disable-msg=W0611
-import os,traceback,platform
+import os,traceback,platform,ctypes,sys
 # from rich import print as rpn
 from time import sleep#perf_counter,
 from subprocess import Popen, PIPE,TimeoutExpired#,SubprocessError
 from datetime import datetime,timezone,date,timedelta
 #####################################################################################################################################################
 _author  = 't.me/dokin_sergey'
-_version = '1.4.3'
-_verdate = '2024-06-14 19:57'
+_version = '1.5.1'
+_verdate = '2024-06-17 11:21'
 _LogLocPath = os.path.dirname(__file__)
 _GlobaLen = 120
+#----------------------------------------------------------------------------------
+try:
+    while True:
+        if not ctypes.windll.shell32.IsUserAnAdmin():
+            while True:
+                print('\nПрограмма запущена БЕЗ прав администратора')
+                print('\nПопытаться перезапустить c правами администратора      -> [Enter]')
+                print('\nПродолжить с установкой модулей в профиль пользователя -> [Y]')
+                print('\nЗавершить работу программы                             -> [0]')
+                knu = input('\nВаш выбор :->').strip()
+                if knu =='0':os._exit(0)
+                if knu in ('Y','y','Д','д',''):break
+            #--------------------------------------------------------------------------------
+            if not knu:
+                ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, __file__,None,1)
+                os._exit(0)
+            else:break
+        break
+except Exception as AMess:
+    print(f'{AMess}')
+
 #----------------------------------------------------------------------------------
 class DokExcept(Exception):
     def __init__(self, message:str):
@@ -18,8 +39,8 @@ class DokExcept(Exception):
 debug = False
 #####################################################################################################################################################
 try:
-    _LogFile  = fr'{_LogLocPath}\.UpdMod_logg_{str(date.today())}.txt'
-    _ListModl = fr'{_LogLocPath}\.ModuList.txt'
+    _LogFile  = fr'{_LogLocPath}\UpdMod_logg_{str(date.today())}.txt'
+    _ListModl = fr'{_LogLocPath}\ModuList.txt'
 except Exception as EMess:
     print(f'Ошибка: {EMess}')
     print(f'Ошибка: {traceback.format_exc()}')
@@ -152,7 +173,7 @@ def InstMod(ModName:str)->bool:
         print(f'{MErs}')
         print(f'{traceback.format_exc()}')
         return False
-    else:return True
+    return True
 ###########################################################################################################################
 def LoadIniSett(SFile:str = _ListModl)->dict[str,bool]:
     DctMod:dict[str,bool] = {}
