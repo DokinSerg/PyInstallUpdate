@@ -6,7 +6,7 @@ from subprocess import Popen, PIPE,TimeoutExpired#,SubprocessError
 from datetime import datetime,timezone,date,timedelta
 #####################################################################################################################################################
 _author  = 't.me/dokin_sergey'
-_version = '1.5.1'
+_version = '1.5.3'
 _verdate = '2024-06-17 11:21'
 _LogLocPath = os.path.dirname(__file__)
 _GlobaLen = 120
@@ -114,13 +114,13 @@ def LogErrDebug(Mess1:str,Mess2:str, Mess3:str = '')->bool:
         Led = True
     return Led
 #####################################################################################################################################################
-def cmdexec(CMDcom:list[str])->str:
+def cmdexec(CMDcom:list[str],cleer:int = 1)->str:
     # global
     cmdres = ''
     try:
     #---------------------------------------------------------------------------------------------------------------------
         print('\n\t[', end = '', flush=True)
-        with Popen(CMDcom, shell=True,stdout = PIPE,stderr = PIPE, encoding="cp866") as popps:
+        with Popen(CMDcom, shell=True,stdout = PIPE,stderr = PIPE, encoding="cp866") as popps:#
             for ici in range(100):
                 if popps.poll():break
                 if not ici % 5:print('#', end = '', flush=True)
@@ -128,8 +128,10 @@ def cmdexec(CMDcom:list[str])->str:
             print(f'] {(ici+1)/10:.2f} c\n')
             pls = popps.communicate()
         # print(f'Результат:{pls}')
-        if bool(pls[0]):cmdres = str(pls[0])
-        if bool(pls[1]):raise DokExcept (pls[1])
+        if bool(pls[0]):cmdres = str(pls[0])#.decode('cp866')
+        if bool(pls[1]):
+            if cleer:raise DokExcept (pls[1])
+            cmdres += str(pls[1])
     #----------------------------------------------------------------------------------------------------------------------
     except DokExcept as Mess:
         print(f'Проблема:{Mess}')
@@ -204,9 +206,15 @@ if __name__ == '__main__':
     while True:
         try:
             import pip
+            cmdlist = ['pip','wheel']
+            rez = cmdexec(cmdlist,0)
+            if (rez.splitlines()[-1]).startswith(r'[notice] To update'):
+                cmdlist = ['python.exe','-m','pip','install','--upgrade','pip']
+                cmdexecNoOut(cmdlist)
+                input(':->')
             break
         except ModuleNotFoundError as MErs:
-            LogErrDebug('Failure',f'{MErs}','cmdexecNoOut')
+            LogErrDebug('Failure',f'{MErs}','__main__')
             print(f'\tМодуль PIP не установлен: {MErs}')
             if not input('Установить? :-> '):
                 cmdlist = ['python','-m','ensurepip','--upgrade']
@@ -294,6 +302,14 @@ if __name__ == '__main__':
                 LogErrDebug('Install',f'{ui:20} ', os.path.basename(__file__))
     if not Updt and not Upd2Dict:
         print('Все модули последней версии')
+    #----------------------------------------------------------------------
+    # from rich import print as rpn
+    # cmdlist = ['pipdeptree',]
+    # rez = cmdexecNoOut(cmdlist)
+    # rez = cmdexec(cmdlist)
+    # restxt = rez.splitlines()#[2:]
+    # for tst in restxt:
+        # print(tst)
     #----------------------------------------------------------------------
     input('\nВыход :-> ')
     os._exit(0)

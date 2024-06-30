@@ -1,6 +1,6 @@
 mypy
 pylint
 rich
-pyMI
+PyMI
 pysftp
 types-paramiko
