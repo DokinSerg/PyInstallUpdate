@@ -4,3 +4,4 @@ rich
 PyMI
 pysftp
 types-paramiko
+psycopg-binary
