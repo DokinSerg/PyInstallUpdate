@@ -6,8 +6,8 @@ from subprocess import Popen, PIPE,TimeoutExpired#,SubprocessError
 from datetime import datetime,timezone,date,timedelta
 #####################################################################################################################################################
 _author  = 't.me/dokin_sergey'
-_version = '1.5.3'
-_verdate = '2024-06-17 11:21'
+_version = '1.6.1'
+_verdate = '2024-07-17 20:00'
 _LogLocPath = os.path.dirname(__file__)
 _GlobaLen = 120
 #----------------------------------------------------------------------------------
@@ -193,16 +193,21 @@ def LoadIniSett(SFile:str = _ListModl)->dict[str,bool]:
 ###########################################################################################################################
 if __name__ == '__main__':
     print(f'Обновление модулей вер.{_version} для Python ver.{platform.python_version()}')
-    # debug = True
+    os.chdir(r'C:\Program Files\Python312\Scripts')
     #---------------------------------------------------------------------------------------------------------------------------
     FileWrite(_LogFile,'',('*'*(_GlobaLen+20),))
     InstDict = LoadIniSett()
+
     #--------------------------------------------------------------------------------------------------------------------------------------
     LogErrDebug('Message',f'Программы установки и обновления Pytnob: {_version} ; от {_verdate} ; Автор {_author} ; ', os.path.basename(__file__))
     LogErrDebug('Message',f'Установлен Python ver.{platform.python_version()} ; {platform.python_build()[1]} ; {platform.python_compiler()}', os.path.basename(__file__))
 #------------------------------------------------------------------------
-    os.chdir(r'C:\Program Files\Python312\Scripts')
+    dmn = os.environ['USERDOMAIN'].lower()
+    if any(x in dmn for x in ('dokin','1more')):
+        InstDict={'mypy':False,'psycopg-binary':False,'pylint':False,'PyMI':False,'pysftp':False,'pythonnet':False,'requests':False,'rich':False,
+        'types-paramiko':False,'pysecstring':False}
 #----------------------------------------------------------------------- Установка, '-a'
+    print('\n\tПроверка готовности модуля PIP')
     while True:
         try:
             import pip
@@ -224,6 +229,7 @@ if __name__ == '__main__':
                 sleep(3)
                 os._exit(0)
 #----------------------------------------------------------------------- Установка, '-a'
+    print('\tПроверка установленных модулей')
     while True:
         try:
             import pipdeptree
@@ -253,19 +259,23 @@ if __name__ == '__main__':
             UpdDict[ai] = False #Создаем словарь установленных компонентов для обновления
             if ai in InstDict: InstDict[ai] = True #Помечаем ТРЕБУЕМЫЕ компоненты как установленные
     #----------------------------------------------------------------------------------------------
-    # print('\n\tНеобходимо установить\n')
+    # print('\n\tНеобходимо дополнительно установить\n')
     for ii,ij in InstDict.items():
         if not ij:
-            print(f'\t{ii:18}')
+            # print(f'\t{ii:18}')
             Inst = True
     if Inst:
-        print('\nНеобходимо установить перечисленные компоненты')
+        print('\n\tНеобходимо дополнительно установить следующие компоненты\n')
+        for ii,ij in InstDict.items():
+            if not ij:print(f'\t{ii:18}')
+    #-----------------------------------------------------------------------------------------------
         if not input('\nВыполнить? :-> '):
             LogErrDebug('Install','Дополнительно установлены', os.path.basename(__file__))
             for ii,ij in InstDict.items():
                 if not ij:InstMod(f'{ii}')
     print(f'\n{'*'*100}')
     #-------------------------------------------------
+    print('\n\tПроверка доступных обновлений')
     Upd2Dict = {}
     cmdlist = ['pip3', 'list','-o']
     rez = cmdexec(cmdlist)
@@ -301,7 +311,7 @@ if __name__ == '__main__':
                 cmdexecNoOut(cmdlist)
                 LogErrDebug('Install',f'{ui:20} ', os.path.basename(__file__))
     if not Updt and not Upd2Dict:
-        print('Все модули последней версии')
+        print('\tВсе модули последней версии')
     #----------------------------------------------------------------------
     # from rich import print as rpn
     # cmdlist = ['pipdeptree',]
