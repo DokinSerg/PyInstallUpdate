@@ -6,8 +6,8 @@ from subprocess import Popen, PIPE,TimeoutExpired#,SubprocessError
 from datetime import datetime,timezone,date,timedelta
 #####################################################################################################################################################
 _author  = 't.me/dokin_sergey'
-_version = '1.6.3'
-_verdate = '2024-07-28 20:00'
+_version = '1.6.5'
+_verdate = '2024-08-06 22:19'
 _LogLocPath = os.path.dirname(__file__)
 _GlobaLen = 120
 #----------------------------------------------------------------------------------
@@ -287,7 +287,7 @@ if __name__ == '__main__':
             LogErrDebug('Install',f'{name:18} ; {old:8} ; {new:8}', os.path.basename(__file__))
             if name in UpdDict:
                 UpdDict[name] = True #Помечаем компонентов требующие обновления
-            else:Upd2Dict[name] = True #2-я очередь обновлений
+            # else:Upd2Dict[name] = True #2-я очередь обновлений !!!!отключаем, создает проблемы
     #------------------------------------------------------Обновление---------------------------------
     for ui,uj in UpdDict.items():
         if uj:
