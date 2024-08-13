@@ -6,8 +6,8 @@ from subprocess import Popen, PIPE,TimeoutExpired#,SubprocessError
 from datetime import datetime,timezone,date,timedelta
 #####################################################################################################################################################
 _author  = 't.me/dokin_sergey'
-_version = '1.6.5'
-_verdate = '2024-08-06 22:19'
+_version = '1.6.7'
+_verdate = '2024-08-07 11:42'
 _LogLocPath = os.path.dirname(__file__)
 _GlobaLen = 120
 #----------------------------------------------------------------------------------
@@ -204,8 +204,8 @@ if __name__ == '__main__':
 #------------------------------------------------------------------------
     dmn = os.environ['USERDOMAIN'].lower()
     if any(x in dmn for x in ('dokin','1more')):
-        InstDict={'mypy':False,'psycopg-binary':False,'pylint':False,'PyMI':False,'pysftp':False,'pythonnet':False,'requests':False,'rich':False,
-        'types-paramiko':False,'pysecstring':False}
+        InstDict={'mypy':False,'psycopg-binary':False,'pylint':False,'PyMI':False,'pysftp':False,'pythonnet':False,'requests':False,'types-requests':False,
+            'rich':False,'types-paramiko':False,'pysecstring':False}
 #----------------------------------------------------------------------- Установка, '-a'
     print('\n\tПроверка готовности модуля PIP')
     while True:
@@ -276,7 +276,7 @@ if __name__ == '__main__':
     print(f'\n{'*'*100}')
     #-------------------------------------------------
     print('\n\tПроверка доступных обновлений')
-    Upd2Dict = {}
+    # Upd2Dict = {}
     cmdlist = ['pip3', 'list','-o']
     rez = cmdexec(cmdlist)
     if  rez:
@@ -303,14 +303,14 @@ if __name__ == '__main__':
                     cmdlist = ['pip3','install','-U',f'{ui}']
                     cmdexecNoOut(cmdlist)
                     LogErrDebug('Install',f'{ui:20} ', os.path.basename(__file__))
-    if Upd2Dict:
-        for ui,uj in Upd2Dict.items():
-            if uj:
-                print(f'Модуль {ui}')
-                cmdlist = ['pip3','install','-U',f'{ui}']
-                cmdexecNoOut(cmdlist)
-                LogErrDebug('Install',f'{ui:20} ', os.path.basename(__file__))
-    if not Updt and not Upd2Dict:
+    # if Upd2Dict:
+        # for ui,uj in Upd2Dict.items():
+            # if uj:
+                # print(f'Модуль {ui}')
+                # cmdlist = ['pip3','install','-U',f'{ui}']
+                # cmdexecNoOut(cmdlist)
+                # LogErrDebug('Install',f'{ui:20} ', os.path.basename(__file__))
+    if not Updt:# and not Upd2Dict:
         print('\tВсе модули последней версии')
     #----------------------------------------------------------------------
     # from rich import print as rpn
