@@ -228,10 +228,10 @@ if __name__ == '__main__':
     #------------------------------------------------------------------------
     dmn = os.environ['USERDOMAIN'].lower()
     if any(x in dmn for x in ('dokin', '1more')):
-        InstDict = {'mypy': False, 'psycopg-binary': False, 'pylint': False, 'PyMI': False, 'pysftp': False,
-                    'pythonnet': False, 'requests': False, 'types-requests': False,
-                    'rich': False, 'types-paramiko': False, 'pysecstring': False}
-    #----------------------------------------------------------------------- Установка, '-a'
+        InstDict = {'mypy': False, 'psycopg-binary': False, 'pylint': False, 'PyMI': False, 'paramiko': False,
+                    'pythonnet': False, 'requests': False, 'types-requests': False, 'psutil':False,
+                    'rich': False, 'types-paramiko': False,}
+    #----------------------------------------------------------------------- Установка, '-a' 'types-requests': False
     print('\n\tПроверка готовности модуля PIP')
     while True:
         try:

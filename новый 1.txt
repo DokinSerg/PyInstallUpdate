@@ -1,0 +1,3 @@
+CREATE USER 'teampass_admin'@'localhost' IDENTIFIED BY 'Wku24-uvhTLx';
+GRANT ALL PRIVILEGES ON *.* TO 'twcloud'@'localhost' WITH GRANT OPTION;
+grant all privileges on teampass.* to teampass_admin@localhost WITH GRANT OPTION;
