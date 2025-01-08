@@ -272,8 +272,8 @@ if __name__ == '__main__':
                 os._exit(0)
     #--------------------------------------------------------------------------------------
     cmdlist = ['pipdeptree', ]
-    UpdDict = {};
-    Inst = False;
+    UpdDict = {}
+    Inst = False
     Updt = False
     rez = cmdexec(cmdlist)
     restxt = rez.splitlines()  #[2:]
